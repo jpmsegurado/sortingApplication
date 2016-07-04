@@ -15,11 +15,15 @@ public class SortingApplication {
 
     
     public static void selectionSort(Table paramTable, int paramNumberOfElements) {
-       for(int i=0, len = paramTable.getNumberOfRecords(); i < len; i++){
+       for(int i=0, len = paramTable.getNumberOfRecords(); i < len - 1; i++){
+           int menor = i;
            for(int j = i + 1; j < len; j++){
-               if(paramTable.compareRecordKey(i, j) == 1){
-                   paramTable.exchangeRecords(i, j);
+               if(paramTable.compareRecordKey(menor, j) == 1){
+                   menor = j;
                }
+           }
+           if(i != menor){
+               paramTable.exchangeRecords(i, menor);
            }
        }
     }
@@ -63,7 +67,7 @@ public class SortingApplication {
         if (numberOfRecordsGenerated != 0) {
             System.out.println("Loading the stored record from  <" + "Table.csv" + "> to the table.");
             numberOfRecordsLoaded     = (int) applicationTable.loadFromCSV(applicationPath + "Table.csv", 0, (numberOfRecordsGenerated - 1));
-            if (numberOfRecordsLoaded == numberOfRecordsGenerated) {
+            /*if (numberOfRecordsLoaded == numberOfRecordsGenerated) {
                System.out.println("Printing records from the table.");      
                numberOfRecordsPrinted      = applicationTable.print(0, (numberOfRecordsGenerated - 1));
                if (numberOfRecordsPrinted == numberOfRecordsLoaded) {
@@ -79,14 +83,14 @@ public class SortingApplication {
             else {
                  System.out.println("Unfortunately there are records that have not been uploaded to the table (from .csv file).");
                  System.out.println("Please check the parameters entered for the loading process.");
-            }
+            }*/
         }
         else {
             System.out.println("Unfortunately no record can be generated.");
             System.out.println("Please check the parameters entered for the generation process.");
         }
         selectionSort(applicationTable, 4);
-        applicationTable.print(0, 4);
+        //applicationTable.print(0, 4);
         String isSorted = applicationTable.isSorted() ? "YES" : "NO";
         System.out.println(isSorted);
         

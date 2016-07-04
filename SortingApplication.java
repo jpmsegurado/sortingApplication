@@ -27,6 +27,105 @@ public class SortingApplication {
            }
        }
     }
+    
+    public static void mergeSort(Table table, int inicio, int fim) {
+	if (fim <= inicio) {
+		return;
+	}
+	int meio = (inicio + fim) / 2;
+	mergeSort(table, inicio, meio);
+	mergeSort(table, meio + 1, fim);
+	
+        Table a = new Table(), b = new Table();
+	for (int i = 0; i <= meio - inicio; i++) {
+                a.addRecord(table.getRecord(inicio + i));
+	}
+	for (int i = 0; i <= fim - meio - 1; i++) {
+                b.addRecord(table.getRecord(meio + 1 + i));
+	}
+	int i = 0;
+	int j = 0;
+	for (int k = inicio; k <= fim; k++) {
+		if (i < a.getNumberOfRecords() && j < b.getNumberOfRecords()) {
+			//if (A[i] < B[j]) {
+                        if (compareRecords(a.getRecord(i), b.getRecord(j)) == -1) {
+                                table.setRecord(a.getRecord(i), k);
+			} else {
+                                table.setRecord(b.getRecord(j++), k);
+			}
+		} else if (i < a.getNumberOfRecords()) {
+                        table.setRecord(a.getRecord(i++), k);
+		} else if (j < b.getNumberOfRecords()) {
+                        table.setRecord(b.getRecord(j++), k);
+		}
+	}
+    }
+    
+    public static int compareRecords(PersonalRecord a, PersonalRecord b){
+        
+        
+        
+        if (a.getPersonalDocument().getType() < b.getPersonalDocument().getType()) {
+            //
+            // If the TYPE of the first record is less than the TYPE of the second record, then ...
+            //
+            return(-1);  
+        }
+        if (a.getPersonalDocument().getType() > b.getPersonalDocument().getType()) {
+            //
+            // If the TYPE of the first record is greater than the TYPE of the second record, then ...
+            //
+            return(+1);
+        }
+        if (a.getPersonalDocument().getType() == b.getPersonalDocument().getType()) {
+            //
+            // If the TYPE of the first record is equal to the TYPE of the second record, then ... 
+            //    it is necessary to compare the NUMBERS...
+            //
+            if (a.getPersonalDocument().getNumber() < b.getPersonalDocument().getNumber()) {
+                //
+                // If the NUMBER of the first record is less than the NUMBER of the second record, then ...
+                //
+                return(-1);
+            }
+            if (a.getPersonalDocument().getNumber() > b.getPersonalDocument().getNumber()) {
+                //
+                // If the NUMBER of the first record is greater than the NUMBER of the second record, then ...
+                //
+                return(+1);
+            }
+            if (a.getPersonalDocument().getNumber() == b.getPersonalDocument().getNumber()) {
+                //
+                // If the NUMBER of the first record is equal to the NUMBER of the second record, then ...    
+                //    it is necessary to compare the COUNTRY CODES...
+                //
+                if (a.getPersonalDocument().getOriginCountryCode() < b.getPersonalDocument().getOriginCountryCode()) {
+                    //
+                    // If the ORIGIN COUNTRY CODE of the first record is less than the ORIGIN COUNTRY CODE of the second record, then ...
+                    //
+                    return(-1);
+                }
+                if (a.getPersonalDocument().getOriginCountryCode() > b.getPersonalDocument().getOriginCountryCode()) {
+                    //
+                    // If the ORIGIN COUNTRY CODE of the first record is greater than the ORIGIN COUNTRY CODE of the second record, then ...
+                    //
+                    return(+1);
+                }
+                if (a.getPersonalDocument().getOriginCountryCode() == b.getPersonalDocument().getOriginCountryCode()) {
+                    //
+                    // If the ORIGIN COUNTRY CODE of the first record is equal to the ORIGIN COUNTRY CODE of the second record, then ...
+                    //    It is an error, because the key should be a primary key... 
+                    return(0);
+                }
+            }
+        }
+        // 
+        // this code is never reached, but it is necessary by constraint of the Java.
+        //
+        return (0);  
+        
+    }
+    
     public static void insertionSort() {
     }
     public static void quickSort() {
@@ -89,7 +188,7 @@ public class SortingApplication {
             System.out.println("Unfortunately no record can be generated.");
             System.out.println("Please check the parameters entered for the generation process.");
         }
-        selectionSort(applicationTable, 4);
+        mergeSort(applicationTable, 0, applicationTable.getNumberOfRecords() - 1);
         //applicationTable.print(0, 4);
         String isSorted = applicationTable.isSorted() ? "YES" : "NO";
         System.out.println(isSorted);

@@ -63,7 +63,8 @@ public class SortingApplication {
     }
 
     public static void heapSort(Table paramTable, int paramNumberofElements) {
-        System.out.println("To be implemented");
+        HeapSort heap = new HeapSort();
+        heap.heapSort(paramTable);
     }
 
     public static void beadSort(Table paramTable, int paramNumberofElements) {
